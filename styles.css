@@ -1,0 +1,69 @@
+body {
+  margin: 2rem;
+  padding: 2rem;
+}
+header {
+  display: flex;
+  flex-direction: column;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  background-color: rgb(99, 139, 126);
+}
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+}
+#highScore {
+  border: none;
+  background: none;
+}
+#highScore:hover {
+  cursor: pointer;
+}
+main {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+
+  margin: 1rem;
+}
+.rules {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  width: min(60%, 60rem);
+}
+p {
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+#start {
+  align-self: center;
+  background-color: rgb(52, 105, 88);
+  color: white;
+}
+
+.quiz-container {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  width: min(60%, 60rem);
+  margin: 1rem;
+  padding: 1rem;
+}
+.hide {
+  display: none;
+}
+.btn {
+  margin-top: 0.3rem;
+  padding: 1rem;
+}
+.correct {
+  background-color: rgb(132, 184, 132);
+}
+.wrong {
+  background-color: red;
+}
