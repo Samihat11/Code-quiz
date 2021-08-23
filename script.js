@@ -4,9 +4,12 @@ let timeEL = document.querySelector(".timer");
 let highScore = document.querySelector("#highScore");
 let startButton = document.querySelector("#start");
 let rules = document.querySelector(".rules");
-// let questionEl = document.querySelector("#question");
+
 let answerEl = document.querySelector(".answer");
 let head = document.querySelector("header");
+let result = document.querySelector(".result");
+let resultEl = document.querySelector("#resultForm");
+let labelText = document.querySelector("#text");
 
 // variables
 const count = 0;
@@ -15,6 +18,7 @@ const score = 0;
 let currentQuestionIndex = 0;
 let correct = 0;
 let wrong = 0;
+let shuffledQ;
 
 //create an array for questions
 let questions = [
@@ -53,15 +57,17 @@ let questions = [
     answer: "onclick",
   },
 ];
+
 let takeQuiz = function () {
   rules.classList.add("hide");
-  // shuffledQ = questions.sort(() => Math.random - 0.5);
+  shuffledQ = questions.sort(() => Math.random - 0.5);
   // currentQuestionIndex = 0;
   let startTimer = setInterval(function () {
     timeLeft--;
     timeEL.textContent = timeLeft;
-    if (timeLeft <= 0) {
+    if (timeLeft <= 0 || currentQuestionIndex === shuffledQ.length - 1) {
       clearInterval(startTimer);
+      gameOver();
     }
   }, 1000);
 
@@ -70,12 +76,14 @@ let takeQuiz = function () {
 startButton.addEventListener("click", takeQuiz);
 
 let nextQuestion = function () {
-  currentQuestionIndex++;
-  showQuestion(questions[currentQuestionIndex]);
+  showQuestion(shuffledQ[currentQuestionIndex]);
+
+  // if (currentQuestionIndex === shuffledQ.length - 1) {
+  //   gameOver();
 };
 const questionEl = document.createElement("section");
 let showQuestion = function (questions) {
-  questionEl.textContent = questions.question;
+  questionEl.textContent = shuffledQ.question;
   questionEl.classList.add("quiz-container");
   head.appendChild(questionEl);
   console.log(questions.answer);
@@ -90,18 +98,25 @@ let showQuestion = function (questions) {
 };
 
 function checkAnswer(e) {
-  const selectedAnswer = e.target.innerText;
+  let selectedAnswer = e.target.innerText;
   console.log(selectedAnswer);
-  let answer = questions[currentQuestionIndex].answer;
-
+  const answer = shuffledQ[currentQuestionIndex].answer;
+  console.log(answer);
   if (selectedAnswer === answer) {
     correct++;
-    console.log(correct);
-
+    localStorage.setItem("Correct", correct);
+    currentQuestionIndex++;
     nextQuestion();
   } else {
+    timeLeft -= 10;
     wrong++;
-    console.log(wrong);
+    localStorage.setItem("Wrong", wrong);
+    currentQuestionIndex++;
     nextQuestion();
   }
+}
+function gameOver() {
+  questionEl.classList.add("hide");
+  result.classList.remove("hide");
+  labelText.innerText = `Your final score is ${correct}`;
 }
