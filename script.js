@@ -12,7 +12,9 @@ let head = document.querySelector("header");
 const count = 0;
 let timeLeft = 101;
 const score = 0;
-let currentQuestionIndex;
+let currentQuestionIndex = 0;
+let correct = 0;
+let wrong = 0;
 
 //create an array for questions
 let questions = [
@@ -53,8 +55,8 @@ let questions = [
 ];
 let takeQuiz = function () {
   rules.classList.add("hide");
-  shuffledQ = questions.sort(() => Math.random - 0.5);
-  currentQuestionIndex = 0;
+  // shuffledQ = questions.sort(() => Math.random - 0.5);
+  // currentQuestionIndex = 0;
   let startTimer = setInterval(function () {
     timeLeft--;
     timeEL.textContent = timeLeft;
@@ -67,12 +69,12 @@ let takeQuiz = function () {
 };
 startButton.addEventListener("click", takeQuiz);
 
-function nextQuestion() {
+let nextQuestion = function () {
   currentQuestionIndex++;
-  showQuestion(shuffledQ[currentQuestionIndex]);
-}
+  showQuestion(questions[currentQuestionIndex]);
+};
 const questionEl = document.createElement("section");
-function showQuestion(questions) {
+let showQuestion = function (questions) {
   questionEl.textContent = questions.question;
   questionEl.classList.add("quiz-container");
   head.appendChild(questionEl);
@@ -85,18 +87,21 @@ function showQuestion(questions) {
     questionEl.appendChild(button);
     button.addEventListener("click", checkAnswer);
   });
-}
+};
 
 function checkAnswer(e) {
   const selectedAnswer = e.target.innerText;
   console.log(selectedAnswer);
-  let answer = shuffledQ[currentQuestionIndex].answer;
-
-  let currentQuestion = shuffledQ[currentQuestionIndex];
+  let answer = questions[currentQuestionIndex].answer;
 
   if (selectedAnswer === answer) {
-    e.target.classList.add("correct");
-    currentQuestion = shuffledQ[currentQuestionIndex + 1];
+    correct++;
+    console.log(correct);
+
+    nextQuestion();
+  } else {
+    wrong++;
+    console.log(wrong);
+    nextQuestion();
   }
-  nextQuestion();
 }
