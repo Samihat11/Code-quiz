@@ -25,18 +25,21 @@
 
         <button id="start">Start</button>
       </section>
-      <section class="hide result">
+      <section class="hide scoreResult">
         <h2>All Done!</h2>
         <p id="text"></p>
         <form id="resultForm">
           <label>
             Enter Initials:
-            <input type="text" />
-            <button>Save</button>
+            <input type="text" id="initials" required />
+            <button id="save">Save</button>
           </label>
         </form>
       </section>
       <section class="hide displayHighscore">
+        <p>Highscores:</p>
+        <ul id="listScores"></ul>
+
         <button id="back">Go back</button>
         <button id="reset">Clear Highscore</button>
       </section>

@@ -1,24 +1,27 @@
 //select dom elements
 let quizBox = document.querySelector(".quiz-container");
 let timeEL = document.querySelector(".timer");
-let highScore = document.querySelector("#highScore");
+
 let startButton = document.querySelector("#start");
 let rules = document.querySelector(".rules");
 
 let answerEl = document.querySelector(".answer");
 let head = document.querySelector("header");
-let result = document.querySelector(".result");
+let result = document.querySelector(".scoreResult");
 let resultEl = document.querySelector("#resultForm");
 let labelText = document.querySelector("#text");
-
+let list = document.querySelector("#listScores");
+let save = document.querySelector("#save");
+let initialEl = document.querySelector("#initials");
+let highScores = document.querySelector(".displayHighscore");
 // variables
 const count = 0;
-let timeLeft = 101;
-const score = 0;
+let timeLeft = 51;
 let currentQuestionIndex = 0;
 let correct = 0;
 let wrong = 0;
 let shuffledQ;
+let storedScores = [{}];
 
 //create an array for questions
 let questions = [
@@ -61,11 +64,11 @@ let questions = [
 let takeQuiz = function () {
   rules.classList.add("hide");
   shuffledQ = questions.sort(() => Math.random - 0.5);
-  // currentQuestionIndex = 0;
+
   let startTimer = setInterval(function () {
     timeLeft--;
     timeEL.textContent = timeLeft;
-    if (timeLeft <= 0 || currentQuestionIndex === shuffledQ.length - 1) {
+    if (timeLeft === 0 || currentQuestionIndex === shuffledQ.length) {
       clearInterval(startTimer);
       gameOver();
     }
@@ -77,16 +80,15 @@ startButton.addEventListener("click", takeQuiz);
 
 let nextQuestion = function () {
   showQuestion(shuffledQ[currentQuestionIndex]);
-
-  // if (currentQuestionIndex === shuffledQ.length - 1) {
-  //   gameOver();
+  // console.log(shuffledQ.length, currentQuestionIndex);
 };
 const questionEl = document.createElement("section");
 let showQuestion = function (questions) {
-  questionEl.textContent = shuffledQ.question;
+  console.log(questions);
+  questionEl.textContent = questions.question;
   questionEl.classList.add("quiz-container");
   head.appendChild(questionEl);
-  console.log(questions.answer);
+  console.log(questions.options);
   questions.options.forEach((option) => {
     console.log(option);
     const button = document.createElement("button");
@@ -104,13 +106,11 @@ function checkAnswer(e) {
   console.log(answer);
   if (selectedAnswer === answer) {
     correct++;
-    localStorage.setItem("Correct", correct);
     currentQuestionIndex++;
     nextQuestion();
   } else {
     timeLeft -= 10;
     wrong++;
-    localStorage.setItem("Wrong", wrong);
     currentQuestionIndex++;
     nextQuestion();
   }
@@ -119,4 +119,17 @@ function gameOver() {
   questionEl.classList.add("hide");
   result.classList.remove("hide");
   labelText.innerText = `Your final score is ${correct}`;
+  saveScore();
 }
+
+function saveScore() {
+  save.addEventListener("click", function (e) {
+    e.preventDefault();
+    userInitial = initialEl.value;
+    result.classList.add("hide");
+    highScores.classList.remove("hide");
+    localStorage.setItem("User", userInitial);
+    localStorage.setItem("Correct", correct);
+  });
+}
+function reset() {}
