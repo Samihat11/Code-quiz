@@ -11,8 +11,7 @@
     <header>
       <h1>Test your Javascript Knowledge!</h1>
       <section class="scoreboard">
-        <button id="highScore">View Highscore</button>
-        <div class="timer">Time:</div>
+        <div class="timer"></div>
       </section>
     </header>
     <main>
@@ -25,23 +24,24 @@
 
         <button id="start">Start</button>
       </section>
-      <section class="hide scoreResult">
+      <section class="container hide scoreResult">
         <h2>All Done!</h2>
         <p id="text"></p>
         <form id="resultForm">
           <label>
             Enter Initials:
             <input type="text" id="initials" required />
-            <button id="save">Save</button>
+            <button id="save" class="btn">Save</button>
           </label>
         </form>
       </section>
-      <section class="hide displayHighscore">
-        <p>Highscores:</p>
-        <ul id="listScores"></ul>
-
-        <button id="back">Go back</button>
-        <button id="reset">Clear Highscore</button>
+      <section class="container hide displayHighscore">
+        <h2>Highscores:</h2>
+        <ol id="listScores"></ol>
+        <div>
+          <button id="back" class="btn">Go back</button>
+          <button id="reset" class="btn">Clear Highscore</button>
+        </div>
       </section>
     </main>
     <script src="script.js"></script>

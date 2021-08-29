@@ -1,6 +1,7 @@
 body {
   margin: 2rem;
   padding: 2rem;
+  font-size: 150%;
 }
 header {
   display: flex;
@@ -11,6 +12,7 @@ h1 {
   margin-bottom: 1rem;
   padding: 2rem;
   background-color: rgb(99, 139, 126);
+  font-size: 200%;
 }
 .scoreboard {
   display: flex;
@@ -46,18 +48,18 @@ p {
   color: white;
 }
 
-.quiz-container {
+.container {
   align-self: center;
   display: flex;
   flex-direction: column;
-  width: min(60%, 60rem);
+  width: min(60%, 70rem);
   margin: 1rem;
   padding: 1rem;
 }
 .hide {
   display: none;
 }
-.btn {
+.answerBtn {
   margin-top: 0.3rem;
   padding: 1rem;
 }
@@ -66,4 +68,20 @@ p {
 }
 .wrong {
   background-color: red;
+}
+h2 {
+  font-size: 175%;
+  color: rgb(8, 83, 59);
+  margin-bottom: 1rem;
+}
+
+.btn {
+  background-color: rgb(52, 105, 88);
+  color: white;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+}
+#text {
+  margin-bottom: 1.5rem;
 }

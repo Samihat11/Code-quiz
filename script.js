@@ -14,14 +14,17 @@ let list = document.querySelector("#listScores");
 let save = document.querySelector("#save");
 let initialEl = document.querySelector("#initials");
 let highScores = document.querySelector(".displayHighscore");
-// variables
-const count = 0;
+let reset = document.getElementById("reset");
+let back = document.getElementById("back");
+
+// global variables
+
 let timeLeft = 51;
-let currentQuestionIndex = 0;
+let currentQuestionIndex;
 let correct = 0;
-let wrong = 0;
+
 let shuffledQ;
-let storedScores = [{}];
+let storedScores = JSON.parse(localStorage.getItem("storedScores")) || [];
 
 //create an array for questions
 let questions = [
@@ -63,12 +66,14 @@ let questions = [
 
 let takeQuiz = function () {
   rules.classList.add("hide");
-  shuffledQ = questions.sort(() => Math.random - 0.5);
-
+  currentQuestionIndex = 0;
   let startTimer = setInterval(function () {
     timeLeft--;
-    timeEL.textContent = timeLeft;
-    if (timeLeft === 0 || currentQuestionIndex === shuffledQ.length) {
+    timeEL.textContent = "Time: " + timeLeft;
+    if (timeLeft < 0 || currentQuestionIndex === questions.length) {
+      timeLeft + 1;
+      console.log(timeLeft);
+      timeEL.textContent = "";
       clearInterval(startTimer);
       gameOver();
     }
@@ -79,20 +84,16 @@ let takeQuiz = function () {
 startButton.addEventListener("click", takeQuiz);
 
 let nextQuestion = function () {
-  showQuestion(shuffledQ[currentQuestionIndex]);
-  // console.log(shuffledQ.length, currentQuestionIndex);
+  showQuestion(questions[currentQuestionIndex]);
 };
 const questionEl = document.createElement("section");
 let showQuestion = function (questions) {
-  console.log(questions);
   questionEl.textContent = questions.question;
-  questionEl.classList.add("quiz-container");
+  questionEl.classList.add("container");
   head.appendChild(questionEl);
-  console.log(questions.options);
   questions.options.forEach((option) => {
-    console.log(option);
     const button = document.createElement("button");
-    button.classList.add("btn");
+    button.classList.add("answerBtn");
     button.innerText = option;
     questionEl.appendChild(button);
     button.addEventListener("click", checkAnswer);
@@ -102,23 +103,33 @@ let showQuestion = function (questions) {
 function checkAnswer(e) {
   let selectedAnswer = e.target.innerText;
   console.log(selectedAnswer);
-  const answer = shuffledQ[currentQuestionIndex].answer;
+  const answer = questions[currentQuestionIndex].answer;
   console.log(answer);
   if (selectedAnswer === answer) {
     correct++;
+    console.log(correct);
+    e.target.classList.add("correct");
     currentQuestionIndex++;
-    nextQuestion();
   } else {
     timeLeft -= 10;
-    wrong++;
+    if (timeLeft < 0) {
+      timeLeft = 0;
+      console.log(timeLeft);
+    }
+
+    e.target.classList.add("wrong");
     currentQuestionIndex++;
-    nextQuestion();
+  }
+  if (currentQuestionIndex < questions.length) {
+    setTimeout(nextQuestion, 500);
   }
 }
 function gameOver() {
   questionEl.classList.add("hide");
   result.classList.remove("hide");
-  labelText.innerText = `Your final score is ${correct}`;
+  labelText.innerHTML = `<strong>Your final score is ${
+    correct * timeLeft
+  }</strong>`;
   saveScore();
 }
 
@@ -126,10 +137,39 @@ function saveScore() {
   save.addEventListener("click", function (e) {
     e.preventDefault();
     userInitial = initialEl.value;
+    if (userInitial === "") {
+      return;
+    }
+
     result.classList.add("hide");
     highScores.classList.remove("hide");
-    localStorage.setItem("User", userInitial);
-    localStorage.setItem("Correct", correct);
+    let obj = {
+      initial: userInitial,
+      score: correct * timeLeft,
+    };
+    storedScores.push(obj);
+    localStorage.setItem("storedScores", JSON.stringify(storedScores));
+    displayScore();
   });
 }
-function reset() {}
+
+let displayScore = function () {
+  storedScores.sort(function (a, b) {
+    return b.score - a.score;
+  });
+  console.log(storedScores);
+  for (let i = 0; i < storedScores.length; i++) {
+    let player = storedScores[i];
+    let li = document.createElement("li");
+    li.style.marginBottom = "1rem";
+    li.textContent = ` ${player.initial}:  ${player.score}`;
+    list.appendChild(li);
+  }
+};
+reset.addEventListener("click", function () {
+  list.innerHTML = "";
+  localStorage.clear();
+});
+back.addEventListener("click", function () {
+  location.reload();
+});
