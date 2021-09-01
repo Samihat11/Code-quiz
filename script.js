@@ -1,29 +1,23 @@
 //select dom elements
 let quizBox = document.querySelector(".quiz-container");
 let timeEL = document.querySelector(".timer");
-
+let highscores = document.getElementById("highscore");
 let startButton = document.querySelector("#start");
 let rules = document.querySelector(".rules");
-
 let answerEl = document.querySelector(".answer");
 let head = document.querySelector("header");
 let result = document.querySelector(".scoreResult");
 let resultEl = document.querySelector("#resultForm");
 let labelText = document.querySelector("#text");
-let list = document.querySelector("#listScores");
 let save = document.querySelector("#save");
 let initialEl = document.querySelector("#initials");
-let highScores = document.querySelector(".displayHighscore");
-let reset = document.getElementById("reset");
-let back = document.getElementById("back");
 
 // global variables
-
-let timeLeft = 51;
+let timeLeft = 121;
 let currentQuestionIndex;
 let correct = 0;
-
 let shuffledQ;
+const questionEl = document.createElement("section");
 let storedScores = JSON.parse(localStorage.getItem("storedScores")) || [];
 
 //create an array for questions
@@ -63,30 +57,37 @@ let questions = [
     answer: "onclick",
   },
 ];
-
+//create function that starts the quiz and timer.
 let takeQuiz = function () {
   rules.classList.add("hide");
   currentQuestionIndex = 0;
   let startTimer = setInterval(function () {
-    timeLeft--;
+    if (timeLeft > 0) {
+      timeLeft--;
+    }
     timeEL.textContent = "Time: " + timeLeft;
-    if (timeLeft < 0 || currentQuestionIndex === questions.length) {
-      timeLeft + 1;
+    if (timeLeft <= 0 || currentQuestionIndex === questions.length) {
       console.log(timeLeft);
       timeEL.textContent = "";
       clearInterval(startTimer);
       gameOver();
     }
   }, 1000);
-
+  //function to display questions
   nextQuestion();
 };
+
+// add event listener to trigger the showQuiz function.
 startButton.addEventListener("click", takeQuiz);
 
+//
 let nextQuestion = function () {
   showQuestion(questions[currentQuestionIndex]);
 };
-const questionEl = document.createElement("section");
+
+/* Uses the section created globally to append question
+Also creates buttons to display the options for the question 
+*/
 let showQuestion = function (questions) {
   questionEl.textContent = questions.question;
   questionEl.classList.add("container");
@@ -99,7 +100,10 @@ let showQuestion = function (questions) {
     button.addEventListener("click", checkAnswer);
   });
 };
-
+/*Listens for a click to identify which option was chosen
+  if correct changes background to green and red if wrong
+  reduces time by 10 seconds if wrong
+*/
 function checkAnswer(e) {
   let selectedAnswer = e.target.innerText;
   console.log(selectedAnswer);
@@ -112,7 +116,7 @@ function checkAnswer(e) {
     currentQuestionIndex++;
   } else {
     timeLeft -= 10;
-    if (timeLeft < 0) {
+    if (timeLeft <= 0) {
       timeLeft = 0;
       console.log(timeLeft);
     }
@@ -124,7 +128,10 @@ function checkAnswer(e) {
     setTimeout(nextQuestion, 500);
   }
 }
+
+//stops the quiz
 function gameOver() {
+  console.log(timeLeft);
   questionEl.classList.add("hide");
   result.classList.remove("hide");
   labelText.innerHTML = `<strong>Your final score is ${
@@ -132,44 +139,32 @@ function gameOver() {
   }</strong>`;
   saveScore();
 }
-
+//saves the score and initial
 function saveScore() {
   save.addEventListener("click", function (e) {
     e.preventDefault();
     userInitial = initialEl.value;
     if (userInitial === "") {
+      alert("Please Enter Initial");
       return;
     }
 
     result.classList.add("hide");
-    highScores.classList.remove("hide");
+    location.replace("./highscores.html");
+    //object for holding user initial and score
     let obj = {
       initial: userInitial,
       score: correct * timeLeft,
     };
+    //saving to local storage after pushing object to storedScores array
     storedScores.push(obj);
     localStorage.setItem("storedScores", JSON.stringify(storedScores));
-    displayScore();
+    //changes location to highscores.html to display scores
+    location.assign("./highscores.html");
   });
 }
 
-let displayScore = function () {
-  storedScores.sort(function (a, b) {
-    return b.score - a.score;
-  });
-  console.log(storedScores);
-  for (let i = 0; i < storedScores.length; i++) {
-    let player = storedScores[i];
-    let li = document.createElement("li");
-    li.style.marginBottom = "1rem";
-    li.textContent = ` ${player.initial}:  ${player.score}`;
-    list.appendChild(li);
-  }
-};
-reset.addEventListener("click", function () {
-  list.innerHTML = "";
-  localStorage.clear();
-});
-back.addEventListener("click", function () {
-  location.reload();
+//listens for a click on highscore button and displays highscores.html
+highscores.addEventListener("click", function () {
+  location.assign("./highscores.html");
 });

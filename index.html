@@ -10,19 +10,19 @@
   <body>
     <header>
       <h1>Test your Javascript Knowledge!</h1>
-      <section class="scoreboard">
+      <section class="container1">
+        <button id="highscore" class="btn">Highscores</button>
         <div class="timer"></div>
       </section>
     </header>
     <main>
       <section class="rules">
         <p>
-          Answer the following Javascript related questions. You have 3 minutes
+          Answer the following Javascript related questions. You have 2 minutes
           to complete all questions. For every wrong attempt, the time cutsback
           by 10 seconds.
         </p>
-
-        <button id="start">Start</button>
+        <button id="start" class="btn">Start</button>
       </section>
       <section class="container hide scoreResult">
         <h2>All Done!</h2>
@@ -34,14 +34,6 @@
             <button id="save" class="btn">Save</button>
           </label>
         </form>
-      </section>
-      <section class="container hide displayHighscore">
-        <h2>Highscores:</h2>
-        <ol id="listScores"></ol>
-        <div>
-          <button id="back" class="btn">Go back</button>
-          <button id="reset" class="btn">Clear Highscore</button>
-        </div>
       </section>
     </main>
     <script src="script.js"></script>
