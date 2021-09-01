@@ -23,4 +23,4 @@ https://user-images.githubusercontent.com/76274620/131728520-737ae5d2-79a0-4b13-
 #### Links
 
 Github Repo - https://github.com/Samihat11/Code-quiz
-Deployed URL-
+Deployed URL- https://samihat11.github.io/Code-quiz/
