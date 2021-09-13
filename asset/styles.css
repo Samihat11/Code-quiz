@@ -1,0 +1,99 @@
+body {
+  margin: 2rem;
+  padding: 2rem;
+  font-size: 150%;
+}
+header {
+  display: flex;
+  flex-direction: column;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  background-color: rgb(99, 139, 126);
+  font-size: 200%;
+  color: rgb(14, 1, 1);
+}
+.container1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+
+  margin: 1rem;
+}
+
+.rules {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  width: min(60%, 60rem);
+}
+/* all p's  */
+p {
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+/* start button alignment and styling */
+#start {
+  align-self: center;
+  background-color: rgb(52, 105, 88);
+  color: white;
+}
+/* flex container main section areas */
+.container {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  width: min(60%, 70rem);
+  margin: 1rem;
+  padding: 1rem;
+}
+.hide {
+  display: none;
+}
+.answerBtn {
+  margin-top: 0.3rem;
+  padding: 1rem;
+}
+/* class for the correct option */
+.correct {
+  background-color: rgb(52, 105, 88);
+}
+/* class for wrong option */
+.wrong {
+  background-color: rgb(233, 60, 60);
+}
+h2 {
+  font-size: 175%;
+  color: rgb(8, 83, 59);
+  margin-bottom: 1rem;
+}
+/* style the all buttons and have them grow on hover */
+.btn {
+  background-color: rgb(52, 105, 88);
+  color: white;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+/* styles when hovered*/
+.btn:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+/* space after score result is displayed */
+#text {
+  margin-bottom: 1.5rem;
+}
+.list {
+  align-self: flex-end;
+}
+#listScores {
+  font-size: 150%;
+}
